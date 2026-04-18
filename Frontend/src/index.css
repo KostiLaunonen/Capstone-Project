@@ -13,7 +13,7 @@
   --surface-2: #22263a;
   --border: #2e3354;
   --title-text: #f4b9b8;
-  --text: #e2e8f0;
+  --text: #1F5B4D;
   --text-muted: #25439e;
   --user-bg: #feecc0;
   --user-border: #2d6a9f;
@@ -65,17 +65,26 @@ body {
 .header-title h1 {
   font-size: 64px;
   font-weight: 600;
+  font-style: italic;
+  color: var(--title-text);
+}
+
+.header-title h2 {
+  font-size: 32px;
+  font-weight: 600;
   color: var(--title-text);
 }
 
 .session-id {
-  font-size: 16px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: #1E2A5A;
   font-family: var(--mono);
 }
 
 .header-controls {
+  flex: 1;
   display: flex;
+  background: white;
   align-items: center;
   gap: 16px;
 }
@@ -101,7 +110,7 @@ body {
   padding: 5px 12px;
   border-radius: 6px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: #f4b9b8;
   color: var(--text-muted);
   font-size: 13px;
   cursor: pointer;
@@ -153,6 +162,18 @@ body {
   visibility: visible;
 }
 /* ── Messages ─────────────────────────────────────────────────────────────── */
+
+.messagelist {
+  flex: 1;
+  display: flex;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.10);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06);
+
+}
+
 .messages {
   flex: 1;
   overflow-y: auto;
@@ -168,7 +189,7 @@ body {
 }
 
 .empty-hint {
-  color: var(--text-muted);
+  color: var(--assistant-text);
   text-align: center;
   max-width: 420px;
   font-size: 14px;
@@ -193,7 +214,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: #f4b9b8;
 }
 
 .message-content {
@@ -310,7 +331,13 @@ body {
   cursor: not-allowed;
 }
 
-.input-area textarea::placeholder { color: var(--text-muted); }
+.btn-flex {
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input-area textarea::placeholder { color: gray; }
 
 .btn-send {
   padding: 10px 20px;

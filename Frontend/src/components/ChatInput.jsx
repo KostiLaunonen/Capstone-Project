@@ -23,7 +23,7 @@ export default function ChatInput({ onSend, disabled }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Message… (Enter to send, Shift+Enter for newline)"
+          placeholder="What should we learn today?"
           disabled={disabled}
           rows={2}
           autoFocus

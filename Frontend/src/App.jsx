@@ -139,11 +139,12 @@ export default function App() {
     <div className="app">
       <header className="header">
         <div className="header-title">
-          <h1>Chat and study with Aimo</h1>
+          <h1>Aimo</h1>
+          <h2>Your always-available and helpful study buddy</h2>
           <span className="session-id">Session: {SESSION_ID}</span>
         </div>
         <div className="header-controls">
-          <label className="streaming-toggle">
+          {/* <label className="streaming-toggle">
             <input
               type="checkbox"
               checked={streamingEnabled}
@@ -151,15 +152,17 @@ export default function App() {
               disabled={isStreaming}
             />
             <span>Streaming</span>
-          </label>
+          </label> */}
+        </div>
+        <div className='btn-flex'>
           <button onClick={clearChat} className="btn-clear" disabled={isStreaming}>
             Clear chat
           </button>
         </div>
       </header>
-
-      <MessageList messages={messages} isStreaming={isStreaming} />
-
+      <div className='messagelist'>
+        <MessageList messages={messages} isStreaming={isStreaming} />
+      </div>
       <ChatInput onSend={sendMessage} disabled={isStreaming} />
 
       {lastUsage && <UsageBar usage={lastUsage} />}
