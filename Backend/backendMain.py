@@ -12,6 +12,7 @@ load_dotenv()
 
 # ─── Tools ────────────────────────────────────────────────────────────────────
 
+# DuckDuckGo API taikaa
 def ddg_search(query: str):
     url = "https://api.duckduckgo.com/"
     params = {
@@ -76,22 +77,17 @@ class ChatRequest(BaseModel):
 async def chat(request: ChatRequest):
 
     chat_session = model.start_chat(history=request.history)
-
-    # 1) Mallin ensimmäinen vastaus
     response = chat_session.send_message(request.message)
 
-    # 2) Etsi mahdollinen function_call
     call = None
     for part in response.candidates[0].content.parts:
         if getattr(part, "function_call", None):
             call = part.function_call
             break
 
-    # 3) Jos työkalu kutsutaan
     if call and call.name == "ddg_search":
         tool_result = ddg_search(**dict(call.args))
 
-        # 🔥 UUSI OIKEA TAPA: lähetä function_response dictinä
         response = chat_session.send_message({
             "function_response": {
                 "name": call.name,
@@ -99,7 +95,6 @@ async def chat(request: ChatRequest):
             }
         })
 
-    # 4) Kerää lopullinen tekstivastaus
     final_text = ""
     for part in response.candidates[0].content.parts:
         if getattr(part, "text", None):
