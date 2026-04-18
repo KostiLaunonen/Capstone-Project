@@ -58,6 +58,7 @@ async def chat(request: ChatRequest):
 
     return {
         "response": response.text,
+        "history": chat_session.history
         }
 
 
