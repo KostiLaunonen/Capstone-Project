@@ -10,6 +10,10 @@ from bs4 import BeautifulSoup
 
 load_dotenv()
 
+# ─── Instructions ────────────────────────────────────────────────────────────────────
+
+# Use 'uvicorn backendMain:app --reload' to start backend !
+
 # ─── Tools ────────────────────────────────────────────────────────────────────
 
 # DuckDuckGo API taikaa
