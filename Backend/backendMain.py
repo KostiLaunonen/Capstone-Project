@@ -29,24 +29,22 @@ def ddg_search(query: str):
     r = requests.get(url, params=params)
     data = r.json()
 
-    results = []
-
-    # Abstract (Wikipedia-tyylinen yhteenveto)
-    if data.get("AbstractText"):
-        results.append({
-            "title": data.get("Heading", "Result"),
+    return {
+        "abstract": {
+            "heading": data.get("Heading"),
+            "text": data.get("AbstractText"),
             "url": data.get("AbstractURL")
-        })
-
-    # Related topics
-    for item in data.get("RelatedTopics", [])[:5]:
-        if isinstance(item, dict) and "Text" in item and "FirstURL" in item:
-            results.append({
-                "title": item["Text"],
+        },
+        "related_topics": [
+            {
+                "text": item["Text"],
                 "url": item["FirstURL"]
-            })
+            }
+            for item in data.get("RelatedTopics", [])
+            if isinstance(item, dict) and "Text" in item and "FirstURL" in item
+        ]
+    }
 
-    return {"results": results}
 
 # ─── Setup ────────────────────────────────────────────────────────────────────
 
@@ -56,7 +54,8 @@ genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(
     "gemini-2.5-flash",
     tools=[ddg_search],
-    system_instruction="Always use the ddg_search tool when the user asks for information."
+    system_instruction="When the ddg_search tool returns an abstract, always summarize it and use it as the primary answer. If related_topics are returned, include them as additional suggestions."
+
 )
 
 app = FastAPI(title="LLM Chat API")
