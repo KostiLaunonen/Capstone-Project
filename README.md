@@ -50,12 +50,12 @@ This architecture implements a lightweight AI agent that can decide when to use 
 ## Setup and Running Instructions
 
 ```bash
-### 1. Clone the repository
+# 1. Clone the repository
 git clone https://github.com/KostiLaunonen/Capstone-Project
 cd Capstone-Project
 cd Backend
 
-### 2. Create virtual environment
+# 2. Create virtual environment
 python -m venv venv
 source venv/bin/activate      # Mac/Linux
 venv\Scripts\activate         # Windows
@@ -63,23 +63,23 @@ venv\Scripts\activate         # Windows
 ### 3. Install backend dependencies
 pip install fastapi uvicorn google-generativeai python-dotenv requests beautifulsoup4
 
-### 4. Add environment variables (.env file)
+# 4. Add environment variables (.env file)
 # Create a .env file in the Backend folder and add:
 GEMINI_API_KEY=your_api_key_here
 
-### 5. Run backend
+# 5. Run backend
 uvicorn backendMain:app --reload
 
 # Backend runs at http://localhost:8000
 
-### 6. Run frontend
+# 6. Run frontend
 cd ..
 cd frontend
 npm install
 npm run dev
-```
 
-# Frontend runs at http://localhost:5173
+### Frontend runs at http://localhost:5173
+```
 
 ## Known Limitations
 - Only one tool (DuckDuckGo API) is used
@@ -89,11 +89,11 @@ npm run dev
 - Not production-ready
 
 ## AI Tools Used
-ChatGPT (OpenAI)
-Used for debugging, structuring backend logic, and writing documentation.
-GitHub Copilot
-Used for boilerplate FastAPI code and import suggestions.
-Google Gemini documentation/examples
-Used to implement tool/function calling correctly.
+- ChatGPT (OpenAI)
+- Used for debugging, structuring backend logic, and writing documentation.
+- GitHub Copilot
+- Used for boilerplate FastAPI code and import suggestions.
+- Google Gemini documentation/examples
+- Used to implement tool/function calling correctly.
 
-All AI-generated suggestions were reviewed and integrated manually.
+- All AI-generated suggestions were reviewed and integrated manually.
