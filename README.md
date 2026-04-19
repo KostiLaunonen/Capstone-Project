@@ -89,11 +89,14 @@ npm run dev
 - Not production-ready
 
 ## AI Tools Used
-- ChatGPT (OpenAI)
-- Used for debugging, structuring backend logic, and writing documentation.
-- GitHub Copilot
-- Used for boilerplate FastAPI code and import suggestions.
-- Google Gemini documentation/examples
-- Used to implement tool/function calling correctly.
 
-- All AI-generated suggestions were reviewed and integrated manually.
+- **ChatGPT (OpenAI)**  
+  Used for debugging, structuring backend logic, and writing documentation.
+
+- **GitHub Copilot**  
+  Used for generating boilerplate FastAPI code and import suggestions.
+
+- **Google Gemini documentation / examples**  
+  Used to correctly implement tool/function calling.
+
+All AI-generated suggestions were reviewed and manually integrated into the final implementation.
