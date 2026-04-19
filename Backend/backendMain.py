@@ -76,11 +76,23 @@ class ChatRequest(BaseModel):
 
 
 # ─── Endpoint ────────────────────────────────────────────────────────────────
+def convert_history(history):
+    converted = []
+    for msg in history:
+        role = "user" if msg["role"] == "user" else "model"
+        converted.append({
+            "role": role,
+            "parts": [{"text": msg["content"]}]
+        })
+    return converted
+
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
 
-    chat_session = model.start_chat(history=request.history)
+    chat_session = model.start_chat(
+    history=convert_history(request.history)
+    )
     response = chat_session.send_message(request.message)
 
     call = None

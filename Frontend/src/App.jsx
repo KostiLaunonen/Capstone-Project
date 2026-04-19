@@ -1,13 +1,3 @@
-/**
- * Day 9 Demo: LLM Chat with Streaming
- *
- * Key things to point out during demo:
- * 1. Toggle streaming ON/OFF to feel the UX difference
- * 2. The fetch + ReadableStream pattern (not EventSource — we need POST)
- * 3. Conversation history is maintained client-side and sent each request
- * 4. Token cost shows up after each response
- */
-
 import { useState } from 'react'
 import ChatInput from './components/ChatInput'
 import MessageList from './components/MessageList'
@@ -15,13 +5,14 @@ import UsageBar from './components/UsageBar'
 
 const API_BASE = 'http://localhost:8000'
 
-// Generate a stable session ID per browser tab
 const SESSION_ID = `session-${Math.random().toString(36).slice(2, 9)}`
 
 export default function App() {
   const [messages, setMessages] = useState([])
   const [isStreaming, setIsStreaming] = useState(false)
-  const [streamingEnabled, setStreamingEnabled] = useState(true)
+
+  // const [streamingEnabled, setStreamingEnabled] = useState(true)
+
   const [lastUsage, setLastUsage] = useState(null)
   const [error, setError] = useState(null)
 
@@ -34,16 +25,19 @@ export default function App() {
     setMessages(updatedMessages)
     setIsStreaming(true)
 
-    // Pass history as-is — the backend converts it to the Gemini format.
-    // History is everything before the new user message.
     const history = messages
 
     try {
-      if (streamingEnabled) {
-        await streamResponse(text, history, updatedMessages)
-      } else {
-        await fetchResponse(text, history, updatedMessages)
-      }
+      // ❌ Streaming disabled
+      // if (streamingEnabled) {
+      //   await streamResponse(text, history, updatedMessages)
+      // } else {
+      //   await fetchResponse(text, history, updatedMessages)
+      // }
+
+      // ✅ Always use non-streaming
+      await fetchResponse(text, history, updatedMessages)
+
     } catch (err) {
       setError(err.message)
     } finally {
@@ -51,11 +45,7 @@ export default function App() {
     }
   }
 
-  // ── Streaming: fetch + ReadableStream ─────────────────────────────────────
-  // message        — the new user text to send
-  // history        — prior communication
-  // currentMessages — full React message list including the new user message,
-  //                   used to append the assistant reply at the correct index
+  /*
   async function streamResponse(message, history, currentMessages) {
     const response = await fetch(`${API_BASE}/chat/stream`, {
       method: 'POST',
@@ -68,12 +58,9 @@ export default function App() {
       throw new Error(err.detail || `Server error: ${response.status}`)
     }
 
-    // Add an empty assistant message slot — we'll fill it in as chunks arrive
     const assistantIndex = currentMessages.length
     setMessages([...currentMessages, { role: 'assistant', content: '' }])
 
-    // https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/getReader
-    // The getReader() method of the ReadableStream interface creates a reader and locks the stream to it. 
     const reader = response.body.getReader()
     const decoder = new TextDecoder()
     let buffer = ''
@@ -84,18 +71,13 @@ export default function App() {
       if (done) break
 
       buffer += decoder.decode(value, { stream: true })
-
-      // SSE events are separated by "\n\n"
       const events = buffer.split('\n\n')
-      buffer = events.pop() // last item may be incomplete
+      buffer = events.pop()
 
       for (const event of events) {
         if (!event.startsWith('data: ')) continue
         const data = JSON.parse(event.slice(6))
 
-        // data is one of:
-        //   { type: 'text', content: '<token(s)>' }
-        //   { type: 'done', usage: { input_tokens: 42, output_tokens: 9, estimated_cost_usd: 0.000008 } }
         if (data.type === 'text') {
           fullText += data.content
 
@@ -110,8 +92,8 @@ export default function App() {
       }
     }
   }
+  */
 
-  // ── Non-streaming: regular fetch ──────────────────────────────────────────
   async function fetchResponse(message, history, currentMessages) {
     const response = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
@@ -143,8 +125,11 @@ export default function App() {
           <h2>Your always-available and helpful study buddy</h2>
           <span className="session-id">Session: {SESSION_ID}</span>
         </div>
+
+        {/* ❌ Streaming toggle disabled */}
+        {/*
         <div className="header-controls">
-          {/* <label className="streaming-toggle">
+          <label className="streaming-toggle">
             <input
               type="checkbox"
               checked={streamingEnabled}
@@ -152,17 +137,21 @@ export default function App() {
               disabled={isStreaming}
             />
             <span>Streaming</span>
-          </label> */}
+          </label>
         </div>
+        */}
+
         <div className='btn-flex'>
           <button onClick={clearChat} className="btn-clear" disabled={isStreaming}>
             Clear chat
           </button>
         </div>
       </header>
+
       <div className='messagelist'>
         <MessageList messages={messages} isStreaming={isStreaming} />
       </div>
+
       <ChatInput onSend={sendMessage} disabled={isStreaming} />
 
       {lastUsage && <UsageBar usage={lastUsage} />}
@@ -170,7 +159,6 @@ export default function App() {
       <div className="error-banner">
         <span>{error}</span>
       </div>
-
     </div>
   )
 }

@@ -19,7 +19,7 @@
   --user-border: #2d6a9f;
   --user-text: #3f4f6b;
   --assistant-bg: #1a1d27;
-  --assistant-text:  #c7d2fe;
+  --assistant-text:  #5f24ac;
   --accent: #4f9cf9;
   --error: #f87171;
   --green: #34d399;
@@ -167,6 +167,7 @@ body {
   flex: 1;
   display: flex;
   padding: 12px;
+  overflow-y: auto;
   background: rgba(0, 0, 0, 0.10);
 
   box-shadow:
@@ -332,9 +333,9 @@ body {
 }
 
 .btn-flex {
-  margin-left: auto;
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; 
 }
 
 .input-area textarea::placeholder { color: gray; }
